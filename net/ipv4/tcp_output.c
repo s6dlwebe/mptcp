@@ -172,8 +172,11 @@ static void tcp_event_data_sent(struct tcp_sock *tp,
 	const struct dst_entry *dst = __sk_dst_get(sk);
 
 	if (sysctl_tcp_slow_start_after_idle &&
-	    (!tp->packets_out && (s32)(now - tp->lsndtime) > icsk->icsk_rto))
+	    (!tp->packets_out && (s32)(now - tp->lsndtime) > icsk->icsk_rto)) {
+		tp->snd_cwnd_before_idle_restart =
+			max(tp->snd_cwnd_before_idle_restart, tp->snd_cwnd);
 		tcp_cwnd_restart(sk, __sk_dst_get(sk));
+	}
 
 	tp->lsndtime = now;
 

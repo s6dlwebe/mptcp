@@ -85,6 +85,12 @@ config MPTCP_ROUNDROBIN
 	  This is a very simple round-robin scheduler. Probably has bad performance
 	  but might be interesting for researchers.
 
+config MPTCP_ECF
+	tristate "MPTCP ECF"
+	depends on (MPTCP=y)
+	---help---
+	  This is the ECF scheduler.
+
 choice
 	prompt "Default MPTCP Scheduler"
 	default DEFAULT
@@ -103,6 +109,11 @@ choice
 		  This is the round-rob scheduler, sending in a round-robin
 		  fashion..
 
+	config DEFAULT_ECF
+		bool "ECF" if MPTCP_ECF=y
+		---help---
+		  This is the ECF scheduler.
+
 endchoice
 endif
 
@@ -111,5 +122,6 @@ config DEFAULT_MPTCP_SCHED
 	depends on (MPTCP=y)
 	default "default" if DEFAULT_SCHEDULER
 	default "roundrobin" if DEFAULT_ROUNDROBIN
+	default "ecf" if DEFAULT_ECF
 	default "default"
 

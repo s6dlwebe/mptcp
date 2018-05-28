@@ -483,6 +483,7 @@ struct sock *tcp_create_openreq_child(struct sock *sk, struct request_sock *req,
 		 */
 		newtp->snd_cwnd = TCP_INIT_CWND;
 		newtp->snd_cwnd_cnt = 0;
+		newtp->snd_cwnd_before_idle_restart = 0;
 
 		if (!newicsk->icsk_ca_setsockopt ||
 		    !try_module_get(newicsk->icsk_ca_ops->owner))

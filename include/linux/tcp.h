@@ -285,6 +285,7 @@ struct tcp_sock {
 	u32	sacked_out;	/* SACK'd packets			*/
 	u32	fackets_out;	/* FACK'd packets			*/
 	u32	tso_deferred;
+	u32	snd_cwnd_before_idle_restart;
 
 	/* from STCP, retrans queue hinting */
 	struct sk_buff* lost_skb_hint;

@@ -1083,7 +1083,12 @@ static int mptcp_alloc_mpcb(struct sock *meta_sk, __u64 remote_key, u32 window)
 	}
 #endif
 
-	meta_tp->mptcp = NULL;
+	meta_tp->mptcp = kmem_cache_zalloc(mptcp_sock_cache, GFP_ATOMIC);
+	if (!meta_tp->mptcp) {
+		kmem_cache_free(mptcp_cb_cache, mpcb);
+		sk_free(master_sk);
+		return -ENOBUFS;
+	}
 
 	/* Store the keys and generate the peer's token */
 	mpcb->mptcp_loc_key = meta_tp->mptcp_loc_key;
